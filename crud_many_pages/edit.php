@@ -1,7 +1,7 @@
 <?php 
 include_once 'Helper.php';
-$produits=get_all("produit");
-extract($_GET);
+extract($_GET);//$add
+$produit=get($id, "produit");
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +10,7 @@ extract($_GET);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>liste des produits</title>
+    <title>edition</title>
 
     <!-- Bootstrap -->
    <!-- Latest compiled and minified CSS -->
@@ -29,46 +29,49 @@ extract($_GET);
     <![endif]-->
   </head>
   <body>
+  <a href="index.php?id=10">accueil</a>
+<?php if (isset($add) && $add =='ok'): ?>
+	Ajout effectué avec succès
+<?php endif ?>
 
-  
-    <div class="container">
-      <h1 align="center" class="alert alert-info"> Liste des produits</h1>
-     <?php if (isset($del) && $del=='ok'): ?>
-       <div class="alert alert-danger" >
-         Suppression effectuée avec succès
-        </div>
-     <?php endif ?>
-     <?php if (isset($upd) && $upd=='ok'): ?>
-       <div class="alert alert-danger" >
-         Modification effectuée avec succès
-        </div>
-     <?php endif ?>
+  <div class="container">
+  	 <form class="form-horizontal" action="update.php" method="post">
+<fieldset>
+<input type="hidden" name="id" value="<?=$produit['id'] ?>">
+<!-- Form Name -->
+<legend>Edition produit</legend>
 
-    <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>libellé</th>
-                <th>prix</th>
-                <th>action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php foreach ($produits as $p): ?>
-                 <tr>
-                <td><?php echo $p['id']; ?></td>
-                <td><?php echo $p['libelle']; ?></td>
-                <td><?php echo $p['prix']; ?></td>
-                <td><a href="delete.php?id=<?php echo $p['id']; ?>" class="btn btn-xs btn-danger"  onclick="return confirm('supprimer?')" >Supprimer</a>
-<a href="edit.php?id=<?php echo $p['id']; ?>" class="btn btn-xs btn-warning">Modifier</a>
-<a href="show.php?id=<?php echo $p['id']; ?>" class="btn btn-xs btn-info">Consulter</a>
-                </td>
-              </tr>
-              <?php endforeach ?>
-             
-            
-            </tbody>
-          </table>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="libelle">Libellé : </label>  
+  <div class="col-md-4">
+  <input value="<?=$produit['libelle'] ?>" id="libelle" name="libelle" type="text" placeholder="" class="form-control input-md" required="">
+    
+  </div>
 </div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="prix">Prix :</label>  
+  <div class="col-md-4">
+  <input value="<?=$produit['prix'] ?>" id="prix" name="prix" type="text" placeholder="0" class="form-control input-md" required="">
+  <span class="help-block">En dhs</span>  
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="" name="" class="btn btn-primary">Modifier</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+  </div>
+
+
    </body>
 </html>

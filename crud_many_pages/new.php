@@ -27,7 +27,7 @@ extract($_GET);//$add
     <![endif]-->
   </head>
   <body>
-  
+  <a href="index.php?id=10">accueil</a>
 <?php if (isset($add) && $add =='ok'): ?>
 	Ajout effectué avec succès
 <?php endif ?>

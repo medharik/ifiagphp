@@ -1,7 +1,7 @@
 <?php 
 include_once 'Helper.php';
-$produits=get_all("produit");
-extract($_GET);
+extract($_GET);//$id
+$produit=get($id, "produit");
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +10,7 @@ extract($_GET);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>liste des produits</title>
+    <title>consultation du produit </title>
 
     <!-- Bootstrap -->
    <!-- Latest compiled and minified CSS -->
@@ -29,46 +29,16 @@ extract($_GET);
     <![endif]-->
   </head>
   <body>
-
-  
     <div class="container">
-      <h1 align="center" class="alert alert-info"> Liste des produits</h1>
-     <?php if (isset($del) && $del=='ok'): ?>
-       <div class="alert alert-danger" >
-         Suppression effectuée avec succès
-        </div>
-     <?php endif ?>
-     <?php if (isset($upd) && $upd=='ok'): ?>
-       <div class="alert alert-danger" >
-         Modification effectuée avec succès
-        </div>
-     <?php endif ?>
-
-    <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>libellé</th>
-                <th>prix</th>
-                <th>action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php foreach ($produits as $p): ?>
-                 <tr>
-                <td><?php echo $p['id']; ?></td>
-                <td><?php echo $p['libelle']; ?></td>
-                <td><?php echo $p['prix']; ?></td>
-                <td><a href="delete.php?id=<?php echo $p['id']; ?>" class="btn btn-xs btn-danger"  onclick="return confirm('supprimer?')" >Supprimer</a>
-<a href="edit.php?id=<?php echo $p['id']; ?>" class="btn btn-xs btn-warning">Modifier</a>
-<a href="show.php?id=<?php echo $p['id']; ?>" class="btn btn-xs btn-info">Consulter</a>
-                </td>
-              </tr>
-              <?php endforeach ?>
-             
-            
-            </tbody>
-          </table>
+  <div class="panel panel-primary col-xs-6">
+            <div class="panel-heading">
+              <h3 class="panel-title"><?php echo $produit['libelle']; ?></h3>
+            </div>
+            <div class="panel-body">
+             Prix : <?=$produit['prix']; ?> DHS
+            </div>
+          </div>
 </div>
+<a onclick="history.go(-1)" class="btn btn-primary" >Retour</a>
    </body>
 </html>
