@@ -1,0 +1,23 @@
+les procedures et les fonctions (modules ou methodes)
+procedure : module de programme effectuant une tache précise
+en math
+	f(x)=3*x
+
+	f(2)=3*2=6 on passe 2 à x et f nous a retourné 6
+	f(3)=3*3=9
+en programmation 
+
+void f(int x){
+int y=3*x;
+	printf("resultat est %i",y)
+}
+
+
+f(4)=> le résultat est 12
+
+
+void ajouter(int x , int y){
+int z=x+y;
+	printf(" somme est %i",z);
+}
+ajouter(10,12);=> somme est  22

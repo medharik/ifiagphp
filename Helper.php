@@ -11,6 +11,7 @@ function ajouter_produit($libelle,$prix){
 	$rp->execute(array($libelle,$prix));
 }
 
+
 function supprimer($id,$table){
 	$cnx=connecter_db();
 	$rp=$cnx->prepare("delete from $table where id = ?");

@@ -1,0 +1,71 @@
+declare 
+v_nom varchar2(20);
+v_nombre number;
+begin 
+select nom , nombre_etudiant into v_nom, v_nombre
+from ecole 
+where id=3;
+DBMS_OUTPUT.put_line('le nom est '||v_nom);
+DBMS_OUTPUT.put_line('le nombre e etudiants  est '||v_nombre);
+end;
+set SERVEROUTPUT ON; --ativer affchage 
+
+-- procedure pour afficher le nom, prenom d'un etudiant selon id passé en parametre
+create or replace PROCEDURE info_student(v_id number)
+is
+v_nom varchar2(100);
+v_prenom etudiant.prenom%type;
+
+begin
+-- requete qui retourne une seule ligne 
+select nom, prenom into v_nom, v_prenom
+from etudiant 
+where id =v_id;
+DBMS_OUTPUT.put_line('nom est '||v_nom||' prenom est '||v_prenom);
+exception 
+
+when  no_data_found then 
+DBMS_OUTPUT.PUT_LINE('aucun etudiant ne corresponds à cet id');
+
+when too_many_rows then
+DBMS_OUTPUT.PUT_LINE('erreur , la requette retourne plus dune ligne ');
+when others then 
+DBMS_OUTPUT.PUT_LINE('Erreur '||SQLERRM);
+end;
+
+
+create or replace procedure etudiant_ecole (nom_ecole varchar2 )
+is
+-- curseur memoire stockant le resultat d'une requete multi-ligne 
+cursor memoire is select et.nom, et.prenom from ecole ec , etudiant et
+where et.ecole_id=ec.id and
+ec.nom =nom_ecole;
+begin
+FOR ligne in memoire 
+loop
+DBMS_OUTPUT.PUT_LINE(' prenom est '||ligne.prenom);
+end loop;
+
+end;
+
+create or replace function  nombre_etd_ecole (id_ecole number) return number
+is
+
+v_nombre number;
+begin
+select count(*) into v_nombre from ecole ec , etudiant et
+where ec.id=et.ecole_id
+and ec.id=id_ecole;
+return v_nombre;
+
+end;
+
+-- test de la fonction
+set SERVEROUTPUT ON;
+declare 
+v_nombre number;
+begin 
+DBMS_OUTPUT.PUT(' debut');
+v_nombre := NOMBRE_ETD_ECOLE(1);
+DBMS_OUTPUT.PUT(' nombre etudiant est '||v_nombre);
+end;
