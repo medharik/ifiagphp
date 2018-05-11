@@ -63,9 +63,6 @@ switch ($op) {
 		// code...
 		break;
 }
-	
-
-
 $produits=get_all($table);
  ?><!DOCTYPE html>
 <html lang="en">
