@@ -10,9 +10,24 @@ extract($_POST);//$libelle<=>$_POST['libelle'] , $prix
 extract($_GET);
 // si add
 if(isset($libelle) && isset($prix) && !isset($idm) ){
-ajouter_produit($libelle, $prix);
+  //debut code upload
+  $chemin="";
+if(isset($_FILES['photo'])){
+$chemin=  charger_fichier($_FILES['photo']);
+$resultat=strstr($chemin,'/');//retourne false(vide) s'il ne trouve pas de /
+if(empty($resultat)){
+ // echo $chemin;
+
+}else {
+  ajouter_produit($libelle, $prix,$chemin);
 $op="add";
 header("location:$page?op=$op");
+
+}
+}
+//fin code upload
+
+
 }
 //si delete
 if(isset($ids)){
@@ -99,8 +114,15 @@ $produits=get_all($table);
   		</div>
   	<?php endif ?>
  
+<?php 
+if(isset($chemin ) &&  empty($resultat)){
+  echo $chemin;
+
+}
+
+ ?>
     	<div class="col-sm-6">
-  <form class="form-horizontal" action="<?= basename(__FILE__) ?>" method="post">
+  <form class="form-horizontal" action="<?= basename(__FILE__) ?>" method="post" enctype="multipart/form-data">
   	<?php if (isset($produit_editer)): ?>
   		<input type="text" name="idm"
   		 value="<?php echo $produit_editer['id']; ?>">
@@ -129,6 +151,14 @@ $produits=get_all($table);
   <div class="col-sm-8">
   <input id="prix" name="prix" type="text" placeholder="0" class="form-control input-sm" required="" value="<?php if(isset($produit_editer)) echo $produit_editer['prix'] ?>" >
   <span class="help-block">En DH</span>  
+  </div>
+</div>
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-sm-4 control-label" for="photo">Image </label>  
+  <div class="col-sm-8">
+  <input id="prix" name="photo" type="file"  class="form-control input-sm"  >
+   
   </div>
 </div>
 
@@ -170,6 +200,7 @@ $produits=get_all($table);
             <thead>
               <tr>
                 <th>#</th>
+                <th>Photo</th>
                 <th>Libellé</th>
                 <th>Prix</th>
                 <th>Actions</th>
@@ -180,6 +211,7 @@ $produits=get_all($table);
 <?php foreach ($produits as $l): ?>
 	<tr>
                 <td><?= $l['id']; ?></td>
+                <td><img src="<?= $l['chemin']; ?>" width="200"></td>
                 <td><?= $l['libelle']; ?></td>
                 <td><?= $l['prix']; ?></td>
                 <td><a onclick="return confirm('vous voulez vraiment supprimer cet élément')" href="produits.php?ids=<?= $l['id']; ?>" class="btn btn-sm btn-danger">Supprimer</a>
