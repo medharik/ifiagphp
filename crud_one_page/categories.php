@@ -1,15 +1,15 @@
 <?php 
 include_once 'Helper.php';
-$table ="produit";
+$table ="categorie";
 $message="";
 $btn="ajouter";
 $classbtn="primary";
 //var_dump($_POST);
 $page=basename(__FILE__);
-extract($_POST);//$libelle<=>$_POST['libelle'] , $prix
-extract($_GET);//$_GET ['categorie_id'] =>$categorie_id
+extract($_POST);//$nom<=>$_POST['nom'] , $prix
+extract($_GET);
 // si add
-if(isset($libelle) && isset($prix) && !isset($idm) ){
+if(isset($nom) ){
   //debut code upload
   $chemin="";
 if(isset($_FILES['photo'])){
@@ -19,7 +19,7 @@ if(empty($resultat)){
  // echo $chemin;
 
 }else {
-  ajouter_produit($libelle, $prix,$chemin,$categorie_id);
+  ajouter_categorie($nom,$chemin);
 $op="add";
 header("location:$page?op=$op");
 
@@ -37,14 +37,14 @@ header("location:$page?op=$op");
 }
 // si show
 if(isset($idc)){
-	$produit_consulter=get($idc,$table);
-//	var_dump($produit_consulter);
+	$categorie_consulter=get($idc,$table);
+//	var_dump($categorie_consulter);
 
 }
 
 //si modif
-	if (isset($libelle) && isset($prix) && isset($idm)){
-		modifier_produit($libelle, $prix, $idm);
+	if (isset($nom) && isset($idm)){
+		//modifier_categorie($nom,, $idm);
 	$op="upd";
 header("location:$page?op=$op");
 	}
@@ -53,10 +53,10 @@ header("location:$page?op=$op");
 
 //si edit
 if(isset($ide)){
-	$produit_editer=get($ide,$table);
+	$categorie_editer=get($ide,$table);
 	$btn="modifier";
 $classbtn="warning";
-//	var_dump($produit_consulter);
+//	var_dump($categorie_consulter);
 
 }
 
@@ -78,11 +78,7 @@ switch ($op) {
 		// code...
 		break;
 }
-
-if(isset($idcategorie)){
-$produits=get_by("produit","categorie_id=$idcategorie");
-}else 
-$produits=get_all($table);
+$categories=get_all($table);
  ?><!DOCTYPE html>
 <html lang="en">
   <head>
@@ -90,7 +86,7 @@ $produits=get_all($table);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Edition des produits</title>
+    <title>Edition des categories</title>
 
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <!-- Bootstrap -->
@@ -127,58 +123,34 @@ if(isset($chemin ) &&  empty($resultat)){
  ?>
     	<div class="col-sm-6">
   <form class="form-horizontal" action="<?= basename(__FILE__) ?>" method="post" enctype="multipart/form-data">
-  	<?php if (isset($produit_editer)): ?>
+  	<?php if (isset($categorie_editer)): ?>
   		<input type="text" name="idm"
-  		 value="<?php echo $produit_editer['id']; ?>">
+  		 value="<?php echo $categorie_editer['id']; ?>">
   	<?php endif ?>
 <fieldset>
 
 <!-- Form Name -->
-<legend>Nouveau produit :</legend>
+<legend>Nouvelle categorie :</legend>
 
 
 <!-- Text input-->
 <div class="form-group">
-  <label class="col-sm-4 control-label" for="libelle">Libellé</label>  
+  <label class="col-sm-4 control-label" for="nom">nom</label>  
   <div class="col-sm-8">
-  <input id="libelle" name="libelle" type="text" placeholder="" class="form-control input-sm" required=""
+  <input id="nom" name="nom" type="text" placeholder="" class="form-control input-sm" required=""
 
- value="<?php if(isset($produit_editer)) echo $produit_editer['libelle'] ?>" 
+ value="<?php if(isset($categorie_editer)) echo $categorie_editer['nom'] ?>" 
   >
     
   </div>
 </div>
 
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-sm-4 control-label" for="prix">Prix</label>  
-  <div class="col-sm-8">
-  <input id="prix" name="prix" type="text" placeholder="0" class="form-control input-sm" required="" value="<?php if(isset($produit_editer)) echo $produit_editer['prix'] ?>" >
-  <span class="help-block">En DH</span>  
-  </div>
-</div>
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-sm-4 control-label" for="prix">Prix</label>  
-  <div class="col-sm-8">
- <select name="categorie_id" id="catgeorie_id">
-   <option value="">...</option>
-   <?php 
-      $categories=get_all("categorie");      
-    ?>
-    <?php foreach ($categories as $c): ?>
-       <option value="<?php echo $c['id']; ?>"><?php echo $c['nom']; ?></option>
-    <?php endforeach ?>
-  
 
- </select> 
-  </div>
-</div>
 <!-- Text input-->
 <div class="form-group">
   <label class="col-sm-4 control-label" for="photo">Image </label>  
   <div class="col-sm-8">
-  <input id="prix" name="photo" type="file"  class="form-control input-sm"  >
+  <input id="photo" name="photo" type="file"  class="form-control input-sm"  >
    
   </div>
 </div>
@@ -197,16 +169,14 @@ if(isset($chemin ) &&  empty($resultat)){
 
     	</div>
     	<!-- fin form -->
-<?php if (isset($produit_consulter)): ?>
+<?php if (isset($categorie_consulter)): ?>
 	<div class="col-sm-6">
 		<div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">
-              	<?=$produit_consulter['libelle'];?></h3>
+              	<?=$categorie_consulter['nom'];?></h3>
             </div>
-            <div class="panel-body">
-             prix : <?=$produit_consulter['prix'] ?> DHS
-            </div>
+           
           </div>
 		
 		 
@@ -222,28 +192,23 @@ if(isset($chemin ) &&  empty($resultat)){
               <tr>
                 <th>#</th>
                 <th>Photo</th>
-                <th>Libellé</th>
-                <th>Prix</th>
-                <th>Catégorie</th>
+                <th>nom</th>
+               
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
 
-<?php foreach ($produits as $l): ?>
+<?php foreach ($categories as $l): ?>
 	<tr>
                 <td><?= $l['id']; ?></td>
                 <td><img src="<?= $l['chemin']; ?>" width="200"></td>
-                <td><?= $l['libelle']; ?></td>
-                <td><?= $l['prix']; ?></td>
-
-                <td> <?php
-               $categorie=   get( $l['categorie_id'],"categorie");
-
-                echo  $categorie['nom']; ?> </td>
-                <td><a onclick="return confirm('vous voulez vraiment supprimer cet élément')" href="produits.php?ids=<?= $l['id']; ?>" class="btn btn-sm btn-danger">Supprimer</a>
-                <a href="produits.php?ide=<?= $l['id']; ?>" class="btn btn-sm btn-warning">Editer</a>
-                <a href="produits.php?idc=<?= $l['id']; ?>" class="btn btn-sm btn-info">Consulter</a></td>
+                <td><?= $l['nom']; ?></td>
+                <td><a onclick="return confirm('vous voulez vraiment supprimer cet élément')" href="categories.php?ids=<?= $l['id']; ?>" class="btn btn-sm btn-danger">Supprimer</a>
+                <a href="categories.php?ide=<?= $l['id']; ?>" class="btn btn-sm btn-warning">Editer</a>
+                <a href="categories.php?idc=<?= $l['id']; ?>" class="btn btn-sm btn-info">Consulter</a>
+<a href="produits.php?idcategorie=<?= $l['id']; ?>" class="btn btn-sm btn-primary">Produits de <?= $l['nom']; ?></a>
+              </td>
               </tr>
 <?php endforeach ?>
               

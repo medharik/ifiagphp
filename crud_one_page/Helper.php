@@ -1,14 +1,36 @@
 <?php 
 include_once 'config.php';
 function connecter_db(){
-$cnx = new PDO(DSN, USER, PASSE);
-return $cnx;
+	try{
+		$options=array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_INIT_COMMAND=>"SET NAMES 'utf8'");	
+	$cnx = new PDO(DSN, USER, PASSE,$options);
+return $cnx;	
+}catch(PDOException $e){
+ die("erreur  ".$e->getMessage());
 }
-function ajouter_produit($libelle,$prix,$chemin){
+
+}
+
+function ajouter_produit($libelle,$prix,$chemin,$categorie_id){
+	try{
 	$cnx=connecter_db();
-	$rp=$cnx->prepare("insert into produit (libelle, prix,chemin) values (?,?,?)");
-	$rp->execute(array($libelle,$prix,$chemin));
+	$rp=$cnx->prepare("insert into produit (libelle, prix,chemin,categorie_id) values (?,?,?,?)");
+	$rp->execute(array($libelle,$prix,$chemin,$categorie_id));
+	}catch(PDOException $e){
+ die("erreur  ".$e->getMessage());
 }
+}
+
+function ajouter_categorie($nom,$chemin){
+	try{
+	$cnx=connecter_db();
+	$rp=$cnx->prepare("insert into categorie (nom,chemin) values (?,?)");
+	$rp->execute(array($nom,$chemin));
+	}catch(PDOException $e){
+ die("erreur cat ".$e->getMessage());
+}
+}
+
 function supprimer($id,$table){
 	$cnx=connecter_db();
 	$rp=$cnx->prepare("delete from $table where id = ?");
@@ -24,6 +46,13 @@ function modifier_produit($libelle,$prix,$id){
 function get_all($table){
 	$cnx=connecter_db();
 	$rp=$cnx->prepare("select * from $table");
+	$rp->execute(array());
+	$data=$rp->fetchAll();
+return $data;
+}
+function get_by($table,$condition){
+	$cnx=connecter_db();
+	$rp=$cnx->prepare("select * from $table where $condition");
 	$rp->execute(array());
 	$data=$rp->fetchAll();
 return $data;
