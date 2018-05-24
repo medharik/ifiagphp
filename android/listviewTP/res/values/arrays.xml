@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="listemenu">
+        <item>Geolocalisation</item>
+        <item>SMS</item>
+        <item>Visiter notre site web</item>
+        <item>Liste view tableau </item>
+        <item>ListView Personnalisé (map) </item>
+        <item>TP TEL ListView </item>
+
+    </array>
+
+
+</resources>

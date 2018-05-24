@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_list_view_personnalisee"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.harik.lenovo2017.di2.ListViewPersonnalisee">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+       <LinearLayout
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <EditText
+               android:id="@+id/edcontact"
+               android:hint="Contact"
+               android:layout_weight="4"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content" />
+           <Button
+               android:onClick="ajouter"
+               android:text="+"
+               android:layout_weight="1"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content" />
+       </LinearLayout>
+    <ListView
+        android:id="@+id/listpersonnalisee"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+    </LinearLayout>
+</FrameLayout>
