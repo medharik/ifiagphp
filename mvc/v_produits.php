@@ -36,7 +36,7 @@ $produits=get_all("produit");
 		<td><?= $p->libelle?></td>
 		<td><?= $p->prix?></td>
 		<td><a href="c.php?a=delete&t=produit&id=<?=$p->id?>">Supprimer</a>
-		<a href="">Editer</a>
+		<a href="c.php?a=edit&t=produit&id=<?=$p->id?>">Editer</a>
 		<a href="c.php?a=show&t=produit&id=<?=$p->id?>">Consulter</a></td>
 	</tr>
 <?php endforeach ?>

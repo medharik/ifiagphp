@@ -11,7 +11,6 @@ $produit=get($id, "produit");
 	<title>consultation du produit : <?=$produit->libelle ?></title>
 </head>
 <body>
-	
 	<h2>Libellé : <?=$produit->libelle ?></h2>
 	<h3>Prix est : <?=$produit->prix ?>DHS</h3>
 <?php retour("Retour"); ?>

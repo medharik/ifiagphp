@@ -17,6 +17,12 @@ switch ($a) {
 		break;
 		case 'show':
 		vers("v_show.php?id=$id");
+		break;
+		case 'edit':
+		vers("v_edit.php?id=$id");
+		break;
+		case 'update':
+		modifier($t,$_POST, $id);
 		break;	
 		default:
 		// code...
